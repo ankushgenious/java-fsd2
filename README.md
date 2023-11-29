@@ -266,3 +266,140 @@ class Test
   }
 }
 
+
+
+# Practice project 6
+
+
+package Practice;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class ExceptionHandelling {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            // Get input from the user
+            System.out.print("Enter numerator: ");
+            int numerator = scanner.nextInt();
+
+            System.out.print("Enter denominator: ");
+            int denominator = scanner.nextInt();
+
+            // Perform division
+            double result = divide(numerator, denominator);
+
+            // Display the result
+            System.out.println("Result of division: " + result);
+
+        } catch (InputMismatchException e) {
+            // Handle non-numeric input
+            System.out.println("Invalid input. Please enter numeric values.");
+
+        } catch (ArithmeticException e) {
+            // Handle division by zero
+            System.out.println("Error: Division by zero is not allowed.");
+
+        } finally {
+            // Close the scanner to prevent resource leak
+            scanner.close();
+        }
+    }
+
+    // Method to perform division
+    private static double divide(int numerator, int denominator) {
+        if (denominator == 0) {
+            // Throw an ArithmeticException if the denominator is zero
+            throw new ArithmeticException("Division by zero is not allowed.");
+        }
+        return (double) numerator / denominator;
+    }
+}
+
+
+# practice project 7
+
+package Practice;
+
+import java.nio.file.*;
+import java.io.*;
+import java.util.List;
+import java.util.Scanner;
+
+public class FileCRUDOperation {
+
+    public static void main(String[] args) {
+        // Specify the file path
+        String filePath = "example.txt";
+
+        // Create a file
+        createFile(filePath);
+
+        // Read from the file
+        readFile(filePath);
+
+        // Update the file
+        updateFile(filePath);
+
+        // Read from the updated file
+        readFile(filePath);
+
+        // Delete the file
+        deleteFile(filePath);
+    }
+
+    // Create a new file
+    private static void createFile(String filePath) {
+        try {
+            Files.createFile(Paths.get(filePath));
+            System.out.println("File created: " + filePath);
+        } catch (IOException e) {
+            System.out.println("Error creating file: " + e.getMessage());
+        }
+    }
+
+    // Read content from a file
+    private static void readFile(String filePath) {
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(filePath));
+            System.out.println("File content:");
+            for (String line : lines) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+
+    // Update content in a file
+    private static void updateFile(String filePath) {
+        try {
+            // Get user input for the new content
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter new content: ");
+            String newContent = scanner.nextLine();
+
+            // Write the new content to the file
+            Files.write(Paths.get(filePath), newContent.getBytes(), StandardOpenOption.APPEND);
+            System.out.println("File updated successfully.");
+
+        } catch (IOException e) {
+            System.out.println("Error updating file: " + e.getMessage());
+        }
+    }
+
+    // Delete a file
+    private static void deleteFile(String filePath) {
+        try {
+            Files.delete(Paths.get(filePath));
+            System.out.println("File deleted: " + filePath);
+        } catch (IOException e) {
+            System.out.println("Error deleting file: " + e.getMessage());
+        }
+    }
+}
+
+
